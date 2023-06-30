@@ -18,19 +18,9 @@ RUN rm i18n/*.json || true
 FROM gcr.io/distroless/nodejs:18
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL maintainer="Bjoern Kimminich <bjoern.kimminich@owasp.org>" \
-    org.opencontainers.image.title="OWASP Juice Shop" \
-    org.opencontainers.image.description="Probably the most modern and sophisticated insecure web application" \
-    org.opencontainers.image.authors="Bjoern Kimminich <bjoern.kimminich@owasp.org>" \
-    org.opencontainers.image.vendor="Open Web Application Security Project" \
-    org.opencontainers.image.documentation="https://help.owasp-juice.shop" \
-    org.opencontainers.image.licenses="MIT" \
-    org.opencontainers.image.version="15.0.0" \
-    org.opencontainers.image.url="https://owasp-juice.shop" \
-    org.opencontainers.image.source="https://github.com/juice-shop/juice-shop" \
-    org.opencontainers.image.revision=$VCS_REF \
-    org.opencontainers.image.created=$BUILD_DATE
 WORKDIR /juice-shop
+RUN npm i sqlite3 -D && rm -rf node_modules && npm i --ignore-scripts && npm rebuild
+RUN npm dedupe
 COPY --from=installer --chown=65532:0 /juice-shop .
 USER 65532
 EXPOSE 3000
