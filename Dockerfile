@@ -19,8 +19,8 @@ FROM gcr.io/distroless/nodejs:18
 ARG BUILD_DATE
 ARG VCS_REF
 WORKDIR /juice-shop
-RUN npm i sqlite3 -D && rm -rf node_modules && npm i --ignore-scripts && npm rebuild
-RUN npm dedupe
+#RUN npm i sqlite3 -D && rm -rf node_modules && npm i --ignore-scripts && npm rebuild
+#RUN npm dedupe
 COPY --from=installer --chown=65532:0 /juice-shop .
 USER 65532
 EXPOSE 3000
